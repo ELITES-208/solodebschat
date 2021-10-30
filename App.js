@@ -6,12 +6,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import StartScreen from "./Screens/StartScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen";
+import ChatScreen from "./Screens/ChatScreen";
 
 const Stack = createStackNavigator();
 
 const globalScreenOption = {
   headerStyle: {
-    backgroundColor: "yellow",
+    backgroundColor: "#dfa249",
   },
   headerTitleStyle: {
     color: "#fff",
@@ -29,16 +30,8 @@ export default function App() {
         <Stack.Screen name="Start" component={StartScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });

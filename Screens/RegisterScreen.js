@@ -7,6 +7,7 @@ import {
   Keyboard,
 } from "react-native";
 import { Input, Button, Text } from "react-native-elements";
+// import firebase from "../Firebase";
 
 function RegistrationScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -20,27 +21,40 @@ function RegistrationScreen({ navigation }) {
     });
   }, [navigation]);
 
-  const register = () => {
-    // auth
-    //   .createUserWithEmailAndPassword(email, password)
-    //   .then((authUser) => {
-    //     authUser.user.updateProfile({
-    //       displayName: name,
-    //       photoUrl: imageURL,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     alert(err.message);
-    //   });
+  //   const register = () => {
+  //     auth
+  //       .createUserWithEmailAndPassword(email, password)
+  //       .then((authUser) => {
+  //         authUser.user.updateProfile({
+  //           displayName: name,
+  //           photoUrl: imageURL,
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         alert(err.message);
+  //       });
+  //   };
+
+  const SignUp = async () => {
+    // try {
+    //   await firebase.auth().createUserWithEmailAndPassword(email, password);
+    // } catch (err) {
+    //   alert(err.message);
+    // }
   };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.Container}>
         <StatusBar style="light" />
-        <View Style={{ marginBottom: 50 }}>
-          <Text h4 Style={{ marginBottom: 50 }}>
-            Create a Solo account
+        <View Style={{ textAlign: "center" }}>
+          <Text h2 style={{ paddingBottom: 50 }}>
+            Join your Colleagues
+          </Text>
+          <Text
+            style={{ textAlign: "center", paddingBottom: 20, fontSize: 17 }}
+          >
+            Communication made easy at your convenience
           </Text>
         </View>
 
@@ -70,7 +84,7 @@ function RegistrationScreen({ navigation }) {
             placeholder="Profile picture imageURL (optional)"
             value={imageURL}
             onChangeText={(text) => setImageURL(text)}
-            onSubmitEditing={register}
+            onSubmitEditing={SignUp}
           />
         </View>
 
@@ -78,7 +92,7 @@ function RegistrationScreen({ navigation }) {
           raised
           title="register"
           containerStyle={styles.button}
-          onPress={register}
+          onPress={SignUp}
         />
         <View
           style={{

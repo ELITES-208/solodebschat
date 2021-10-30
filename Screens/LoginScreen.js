@@ -5,12 +5,13 @@ import {
   StyleSheet,
   Keyboard,
   Dimensions,
-  Image,
   TouchableWithoutFeedback,
 } from "react-native";
 
 import { Button, Text } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
+
+// import firebase from "../Firebase";
 
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -24,6 +25,7 @@ function LoginScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <StatusBar style="light" />
+        <Text h2>Welcome Back !</Text>
 
         <View style={styles.inputContainer}>
           <TextInput
@@ -96,6 +98,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     borderRadius: 20,
+    borderColor: "#dfa249",
     padding: 10,
   },
   button: {
