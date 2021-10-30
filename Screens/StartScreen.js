@@ -9,7 +9,7 @@ function StartScreen({ navigation }) {
 
       <Button
         title="Get Started"
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.replace("Register")}
       />
     </View>
   );

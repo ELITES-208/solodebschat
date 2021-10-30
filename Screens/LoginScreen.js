@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { Button } from "react-native-elements";
+import { Button, Text } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
 
 const { width: WIDTH } = Dimensions.get("window");
@@ -55,14 +55,22 @@ function LoginScreen({ navigation }) {
           onPress={SignIn}
           //   onPress={() => navigation.navigate("Chats")}
         />
-        <Button
-          containerStyle={styles.button}
-          raised
-          type="outline"
-          title="Register"
-          //   onPress={() => navigation.navigate("Register")}
-        />
-
+        <View
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            marginTop: 20,
+          }}
+        >
+          <Text>Don't have an account ?</Text>
+          <Button
+            containerStyle={styles.button2}
+            raised
+            type="outline"
+            title="Sign Up"
+            onPress={() => navigation.goBack("Register")}
+          />
+        </View>
         <View style={{ height: 50 }} />
       </View>
     </TouchableWithoutFeedback>
@@ -93,5 +101,10 @@ const styles = StyleSheet.create({
   button: {
     width: 200,
     marginTop: 10,
+    color: "yellow",
+  },
+  button2: {
+    marginLeft: 10,
+    color: "yellow",
   },
 });

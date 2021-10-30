@@ -80,8 +80,16 @@ function RegistrationScreen({ navigation }) {
           containerStyle={styles.button}
           onPress={register}
         />
-        <Text style={{ color: "#000", fontSize: 15, marginRight: 40 }}>
-          Already have an account?
+        <View
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ color: "#000", fontSize: 15 }}>
+            Already have an account?
+          </Text>
           <Button
             title="login"
             containerStyle={styles.button2}
@@ -89,7 +97,7 @@ function RegistrationScreen({ navigation }) {
             type="outline"
             onPress={() => navigation.navigate("Login")}
           />
-        </Text>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -112,5 +120,7 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 10,
   },
-  button2: {},
+  button2: {
+    marginLeft: 6,
+  },
 });
