@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Input, Button, Text } from "react-native-elements";
+import { auth } from "../fb";
 
 function RegistrationScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -15,7 +16,18 @@ function RegistrationScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [imageURL, setImageURL] = useState("");
 
-  const SignUp = () => {};
+  const SignUp = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        authUser.user.updateProfile({
+          displayName: name,
+          photoURL: imageURL,
+        });
+        console.log(authUser);
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
