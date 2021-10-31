@@ -11,6 +11,7 @@ import {
 
 import { Button, Text } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
+import { auth } from "../fb";
 
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -18,7 +19,14 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const SignIn = () => {};
+  const SignIn = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        console.log(authUser);
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
