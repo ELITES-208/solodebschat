@@ -6,12 +6,11 @@ import {
   Keyboard,
   Dimensions,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 
 import { Button, Text } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
-
-// import firebase from "../Firebase";
 
 const { width: WIDTH } = Dimensions.get("window");
 
@@ -64,14 +63,10 @@ function LoginScreen({ navigation }) {
             marginTop: 20,
           }}
         >
-          <Text>Don't have an account ?</Text>
-          <Button
-            containerStyle={styles.button2}
-            raised
-            type="outline"
-            title="Sign Up"
-            onPress={() => navigation.goBack("Register")}
-          />
+          <Text>Don't have an account ? </Text>
+          <TouchableOpacity onPress={() => navigation.goBack("Register")}>
+            <Text style={styles.button2}>Sign up</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ height: 50 }} />
       </View>
@@ -107,7 +102,6 @@ const styles = StyleSheet.create({
     color: "yellow",
   },
   button2: {
-    marginLeft: 10,
-    color: "yellow",
+    color: "#dfa249",
   },
 });

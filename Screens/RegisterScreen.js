@@ -5,9 +5,9 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import { Input, Button, Text } from "react-native-elements";
-// import firebase from "../Firebase";
 
 function RegistrationScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -15,33 +15,7 @@ function RegistrationScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [imageURL, setImageURL] = useState("");
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerBackTitle: "Back To Login",
-    });
-  }, [navigation]);
-
-  //   const register = () => {
-  //     auth
-  //       .createUserWithEmailAndPassword(email, password)
-  //       .then((authUser) => {
-  //         authUser.user.updateProfile({
-  //           displayName: name,
-  //           photoUrl: imageURL,
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         alert(err.message);
-  //       });
-  //   };
-
-  const SignUp = async () => {
-    // try {
-    //   await firebase.auth().createUserWithEmailAndPassword(email, password);
-    // } catch (err) {
-    //   alert(err.message);
-    // }
-  };
+  const SignUp = () => {};
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -102,15 +76,11 @@ function RegistrationScreen({ navigation }) {
           }}
         >
           <Text style={{ color: "#000", fontSize: 15 }}>
-            Already have an account?
+            Already have an account?{" "}
           </Text>
-          <Button
-            title="login"
-            containerStyle={styles.button2}
-            raised
-            type="outline"
-            onPress={() => navigation.navigate("Login")}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.button2}>Sign in</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -135,6 +105,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button2: {
-    marginLeft: 6,
+    color: "#dfa249",
   },
 });
