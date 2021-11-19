@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 
 import { Button, Text } from "react-native-elements";
@@ -29,7 +30,11 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Platform.OS != "web" ? Keyboard.dismiss() : null;
+      }}
+    >
       <View style={styles.container}>
         <StatusBar style="light" />
         <Text h2>Welcome Back !</Text>

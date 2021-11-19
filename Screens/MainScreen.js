@@ -1,21 +1,54 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../redux";
 import ChatRoomItem from "../components/ChatRoomItem";
 import ChatRoomsData from "../assets/dummy-data/ChatRooms";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { auth } from "../fb";
 
 export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const { fetchUser } = bindActionCreators(actionCreators, dispatch);
 
+  const SignOut = () => {
+    Alert.alert("Logout", "Are you sure you want to log out?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => auth.signOut() },
+    ]);
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "SoloChat",
-      headerRight: () => <View></View>,
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => SignOut()}
+            style={{ paddingHorizontal: 5 }}
+          >
+            <FontAwesome5 name="arrow-circle-left" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{ paddingHorizontal: 5 }}
+          >
+            <MaterialCommunityIcons
+              name="pencil-plus"
+              size={24}
+              color="white"
+            />
+          </TouchableOpacity>
+        </View>
+      ),
     });
   }, []);
 

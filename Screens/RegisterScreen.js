@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Keyboard,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Input, Button, Text } from "react-native-elements";
 import { auth, db } from "../fb";
@@ -34,7 +35,11 @@ function RegisterScreen({ navigation }) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Platform.OS != "web" ? Keyboard.dismiss() : null;
+      }}
+    >
       <View style={styles.Container}>
         <StatusBar style="light" />
         <View Style={{ textAlign: "center" }}>
