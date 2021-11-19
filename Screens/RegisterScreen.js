@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Input, Button, Text } from "react-native-elements";
-import { auth } from "../fb";
+import { auth, db } from "../fb";
 
 function RegistrationScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -23,6 +23,10 @@ function RegistrationScreen({ navigation }) {
         authUser.user.updateProfile({
           displayName: name,
           photoURL: imageURL,
+        });
+        db.collection("users").doc(auth.currentUser.uid).set({
+          name,
+          email,
         });
         console.log(authUser);
       })

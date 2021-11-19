@@ -7,6 +7,11 @@ import LoginScreen from "./Screens/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen";
 import ChatScreen from "./Screens/ChatScreen";
 import { auth } from "./fb";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const Stack = createStackNavigator();
 
@@ -50,14 +55,16 @@ export default function App() {
     );
   }
   return (
-    <NavigationContainer>
-      <StatusBar style="light" />
-      <Stack.Navigator
-        initialRouteName={"Chat"}
-        screenOptions={globalScreenOption}
-      >
-        <Stack.Screen name="Chat" component={ChatScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <StatusBar style="light" />
+        <Stack.Navigator
+          initialRouteName={"Chat"}
+          screenOptions={globalScreenOption}
+        >
+          <Stack.Screen name="Chat" component={ChatScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
