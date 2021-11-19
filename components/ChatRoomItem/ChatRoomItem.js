@@ -14,11 +14,11 @@ export default function ChatRoomItem({ chatRoom }) {
   // };
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity activeOpacity={0.5} style={styles.container}>
       {/* Image of person/chat item */}
       <Image
         source={{
-          uri: user.imageUri,
+          uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg",
         }}
         style={styles.image}
       />
@@ -26,19 +26,19 @@ export default function ChatRoomItem({ chatRoom }) {
       {/* number badges/unread count */}
       {chatRoom.newMessages ? (
         <View style={styles.badgeContainer}>
-          <Text style={styles.badgeText}>{chatRoom.newMessages}</Text>
+          <Text style={styles.badgeText}>4</Text>
         </View>
       ) : null}
 
       {/* part containing name, time and last message */}
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-          <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.text}>{chatRoom.lastMessage.createdAt}</Text>
+          <Text style={styles.name}>Elon Musk</Text>
+          <Text style={styles.text}>createdAt</Text>
         </View>
 
         <Text numberOfLines={1} style={styles.text}>
-          {chatRoom.lastMessage.content}
+          This is the last message
         </Text>
       </View>
     </TouchableOpacity>

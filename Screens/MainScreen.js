@@ -39,6 +39,7 @@ export default function MainScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
+            onPress={() => navigation.navigate("AddChat")}
             style={{ paddingHorizontal: 5 }}
           >
             <MaterialCommunityIcons

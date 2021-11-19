@@ -28,6 +28,7 @@ function RegisterScreen({ navigation }) {
         db.collection("users").doc(auth.currentUser.uid).set({
           name,
           email,
+          imageUri: imageURL,
         });
         console.log(authUser);
       })

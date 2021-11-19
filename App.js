@@ -10,6 +10,7 @@ import { auth } from "./fb";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { LogBox } from "react-native";
+import AddChat from "./Screens/AddChat";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -62,6 +63,7 @@ export default function App() {
           screenOptions={globalScreenOption}
         >
           <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="AddChat" component={AddChat} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
