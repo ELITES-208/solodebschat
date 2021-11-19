@@ -10,7 +10,7 @@ import {
 import { Input, Button, Text } from "react-native-elements";
 import { auth, db } from "../fb";
 
-function RegistrationScreen({ navigation }) {
+function RegisterScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -103,7 +103,7 @@ function RegistrationScreen({ navigation }) {
   );
 }
 
-export default RegistrationScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   Container: {

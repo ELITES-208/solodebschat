@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import StartScreen from "./Screens/StartScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import RegisterScreen from "./Screens/RegisterScreen";
-import ChatScreen from "./Screens/ChatScreen";
+import MainScreen from "./Screens/MainScreen";
 import { auth } from "./fb";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
@@ -49,7 +49,6 @@ export default function App() {
           <Stack.Screen name="Start" component={StartScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -59,10 +58,10 @@ export default function App() {
       <NavigationContainer>
         <StatusBar style="light" />
         <Stack.Navigator
-          initialRouteName={"Chat"}
+          initialRouteName={"Main"}
           screenOptions={globalScreenOption}
         >
-          <Stack.Screen name="Chat" component={ChatScreen} />
+          <Stack.Screen name="Main" component={MainScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
