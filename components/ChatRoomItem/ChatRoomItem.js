@@ -44,7 +44,7 @@ export default function ChatRoomItem({ chatRoom }) {
       );
     return unsubscribe;
   }, []);
-  console.log(info);
+  // console.log(info);
 
   return (
     <TouchableOpacity
