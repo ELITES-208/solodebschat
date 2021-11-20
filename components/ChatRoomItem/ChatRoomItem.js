@@ -3,9 +3,14 @@ import { Text, View, Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { auth } from "../../fb";
 
 export default function ChatRoomItem({ chatRoom }) {
-  const { name, imageUri } = chatRoom?.data?.users[0];
+  const currentUser = auth.currentUser;
+
+  const { name, imageUri } = chatRoom?.data.users.find(
+    (user) => user.id != currentUser.uid
+  );
 
   const navigation = useNavigation();
 

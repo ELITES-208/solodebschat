@@ -2,14 +2,16 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import { db } from "../fb";
+import { auth, db } from "../fb";
 
 export default function AddChatItem({ user }) {
+  const currentUser = auth.currentUser;
+
   const {
     id,
     data: { name, imageUri },
   } = user;
-  // console.log(imageUri);
+  // console.log(currentUser);
 
   const navigation = useNavigation();
 
@@ -17,7 +19,14 @@ export default function AddChatItem({ user }) {
     await db
       .collection("ChatRooms")
       .add({
-        users: [{ id: id, name: name, imageUri: imageUri }],
+        users: [
+          {
+            id: currentUser.uid,
+            name: currentUser.displayName,
+            imageUri: currentUser.photoURL,
+          },
+          { id: id, name: name, imageUri: imageUri },
+        ],
       })
       .then(() => navigation.goBack())
       .catch((error) => alert(error));
