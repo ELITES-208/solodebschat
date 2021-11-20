@@ -1,5 +1,6 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import {
+  FlatList,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -10,9 +11,30 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import MessageBox from "../components/MessageBox";
 import MessageInput from "../components/MessageInput";
+import { db } from "../fb";
 
 export default function ChatScreen({ navigation, route }) {
+  const [messages, setMessages] = useState([]);
+
+  useLayoutEffect(() => {
+    const unsubscribe = db
+      .collection("ChatRooms")
+      .doc(route?.params?.chatRoomId)
+      .collection("Chats")
+      .orderBy("timeStamp", "desc")
+      .onSnapshot((snapshot) =>
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
+    return unsubscribe;
+  }, [route]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Chat",
@@ -39,7 +61,14 @@ export default function ChatScreen({ navigation, route }) {
           Platform.OS != "web" ? Keyboard.dismiss() : null;
         }}
       >
-        <View style={{ flex: 1 }}></View>
+        <View style={{ flex: 1, paddingTop: 10 }}>
+          <FlatList
+            data={messages}
+            renderItem={({ item }) => <MessageBox message={item} />}
+            showsVerticalScrollIndicator={false}
+            inverted
+          />
+        </View>
       </TouchableWithoutFeedback>
       <MessageInput route={route} />
     </SafeAreaView>
