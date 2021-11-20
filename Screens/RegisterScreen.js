@@ -37,7 +37,7 @@ function RegisterScreen({ navigation }) {
           .set({
             users: [auth.currentUser.uid],
           });
-        console.log(authUser);
+        console.log(authUser?.user?.email);
       })
       .catch((error) => alert(error.message));
   };

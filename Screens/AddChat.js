@@ -20,7 +20,7 @@ export default function AddChat({ navigation }) {
       });
     return unsubscribe;
   }, []);
-  console.log(fetchedAddedTo);
+  // console.log(fetchedAddedTo);
 
   useEffect(() => {
     if (fetchedAddedTo.length != 0) {

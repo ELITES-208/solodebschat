@@ -45,6 +45,7 @@ export default function AddChatItem({ user }) {
           },
           { id: id, name: name, imageUri: imageUri },
         ],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => navigation.goBack())
       .catch((error) => alert(error));
