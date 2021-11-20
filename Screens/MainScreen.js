@@ -60,7 +60,7 @@ export default function MainScreen({ navigation }) {
         </View>
       ),
     });
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     const unsubscribe = db.collection("ChatRooms").onSnapshot((snapshot) =>

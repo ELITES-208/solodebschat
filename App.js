@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { LogBox } from "react-native";
 import AddChat from "./Screens/AddChat";
+import ChatScreen from "./Screens/ChatScreen";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -64,6 +65,7 @@ export default function App() {
         >
           <Stack.Screen name="Main" component={MainScreen} />
           <Stack.Screen name="AddChat" component={AddChat} />
+          <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -30,7 +30,7 @@ export default function AddChat({ navigation }) {
       title: "Add New Chat",
       headerBackTitle: null,
     });
-  }, []);
+  }, [navigation]);
   return (
     <SafeAreaView style={styles.container}>
       <View>

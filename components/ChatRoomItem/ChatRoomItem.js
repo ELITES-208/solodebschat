@@ -14,12 +14,16 @@ export default function ChatRoomItem({ chatRoom }) {
 
   const navigation = useNavigation();
 
-  // const onPress = () => {
-  //   navigation.navigate("ChatRoom", { id: chatRoom.id });
-  // };
+  const enterChat = () => {
+    navigation.navigate("Chat");
+  };
 
   return (
-    <TouchableOpacity activeOpacity={0.5} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={styles.container}
+      onPress={enterChat}
+    >
       {/* Image of person/chat item */}
       <Image
         source={{
