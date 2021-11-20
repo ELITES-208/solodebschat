@@ -8,14 +8,14 @@ import { auth } from "../../fb";
 export default function ChatRoomItem({ chatRoom }) {
   const currentUser = auth.currentUser;
 
-  const { name, imageUri } = chatRoom?.data.users.find(
+  const { id, name, imageUri } = chatRoom?.data.users.find(
     (user) => user.id != currentUser.uid
   );
 
   const navigation = useNavigation();
 
   const enterChat = () => {
-    navigation.navigate("Chat");
+    navigation.navigate("Chat", { id, name, imageUri });
   };
 
   return (
