@@ -5,7 +5,7 @@ import styles from "./styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ChatRoomItem({ chatRoom }) {
-  const user = chatRoom.users[1];
+  const { name, imageUri } = chatRoom?.data?.users[0];
 
   const navigation = useNavigation();
 
@@ -18,7 +18,7 @@ export default function ChatRoomItem({ chatRoom }) {
       {/* Image of person/chat item */}
       <Image
         source={{
-          uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg",
+          uri: imageUri,
         }}
         style={styles.image}
       />
@@ -33,7 +33,7 @@ export default function ChatRoomItem({ chatRoom }) {
       {/* part containing name, time and last message */}
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-          <Text style={styles.name}>Elon Musk</Text>
+          <Text style={styles.name}>{name}</Text>
           <Text style={styles.text}>createdAt</Text>
         </View>
 
