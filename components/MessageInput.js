@@ -1,9 +1,11 @@
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import EmojiSelector from "react-native-emoji-selector";
 import React, { useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -14,7 +16,8 @@ import { auth, db } from "../fb";
 import firebase from "firebase/compat/app";
 
 export default function MessageInput({ route }) {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState("");
+  const [IsEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
   const sendMessage = () => {
     Keyboard.dismiss();
@@ -31,51 +34,76 @@ export default function MessageInput({ route }) {
       });
 
     setInput("");
+    setIsEmojiPickerOpen(false);
   };
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[
+        styles.container,
+        { height: IsEmojiPickerOpen || Platform.OS === "web" ? "50%" : "auto" },
+      ]}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={100}
     >
-      <View style={styles.inputContainer}>
-        <SimpleLineIcons
-          name="emotsmile"
-          size={24}
-          color="grey"
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder={"Type your message..."}
-          value={input}
-          onChangeText={(text) => setInput(text)}
-          style={styles.textInput}
-          onSubmitEditing={sendMessage}
-        />
+      <View style={styles.row}>
+        <View style={styles.inputContainer}>
+          <Pressable
+            onPress={() => {
+              setIsEmojiPickerOpen((currentValue) => !currentValue);
+              Keyboard.dismiss();
+            }}
+          >
+            <SimpleLineIcons
+              name="emotsmile"
+              size={24}
+              color="grey"
+              style={styles.icon}
+            />
+          </Pressable>
+          <TextInput
+            placeholder={"Type your message..."}
+            value={input}
+            onChangeText={(text) => setInput(text)}
+            style={styles.textInput}
+            onSubmitEditing={sendMessage}
+          />
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.buttonContainer}
+          onPress={sendMessage}
+        >
+          <Ionicons
+            name="send-sharp"
+            size={25}
+            color="white"
+            style={{ position: "relative", left: 3, padding: 10 }}
+          />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={styles.buttonContainer}
-        onPress={sendMessage}
-      >
-        <Ionicons
-          name="send-sharp"
-          size={25}
-          color="white"
-          style={{ position: "relative", left: 3, padding: 10 }}
-        />
-      </TouchableOpacity>
+      {Platform.OS != "web"
+        ? IsEmojiPickerOpen && (
+            <EmojiSelector
+              onEmojiSelected={(emoji) =>
+                setInput((currentMessage) => currentMessage + emoji)
+              }
+              columns={8}
+            />
+          )
+        : null}
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
     padding: 10,
-    alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
     width: "100%",
+    alignItems: "center",
   },
   inputContainer: {
     flexDirection: "row",
