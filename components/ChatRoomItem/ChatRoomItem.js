@@ -14,11 +14,10 @@ export default function ChatRoomItem({ chatRoom }) {
     (user) => user.id != currentUser.uid
   );
 
-  const date = chatRoom?.data?.createdAt.toDate().toLocaleDateString();
+  const date = chatRoom?.data?.createdAt?.toDate().toLocaleDateString();
   const time = chatRoom?.data?.createdAt
-    .toDate()
-    .toLocaleTimeString()
-    .slice(0, 5);
+    ?.toDate()
+    .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   const navigation = useNavigation();
 
@@ -34,11 +33,12 @@ export default function ChatRoomItem({ chatRoom }) {
       .doc(chatRoomId)
       .collection("Chats")
       .orderBy("timeStamp", "desc")
+      .limit(1)
       .onSnapshot((snapshot) =>
         setInfo(
           snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
+            timestamp: doc.data().timeStamp,
+            content: doc.data().content,
           }))
         )
       );
@@ -72,7 +72,12 @@ export default function ChatRoomItem({ chatRoom }) {
         <View style={styles.row}>
           <Text style={styles.name}>{name}</Text>
           {info?.length != 0 ? (
-            <Text style={styles.text}>createdAt</Text>
+            <Text style={styles.text}>
+              {info?.[0]?.timestamp?.toDate().toLocaleDateString()}{" "}
+              {info?.[0]?.timestamp
+                ?.toDate()
+                .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </Text>
           ) : (
             <Text style={styles.text}>
               {date} {time}
@@ -80,9 +85,11 @@ export default function ChatRoomItem({ chatRoom }) {
           )}
         </View>
 
-        <Text numberOfLines={1} style={styles.text}>
-          This is the last message
-        </Text>
+        {info?.length != 0 ? (
+          <Text numberOfLines={1} style={styles.text}>
+            {info?.[0]?.content}
+          </Text>
+        ) : null}
       </View>
     </TouchableOpacity>
   );

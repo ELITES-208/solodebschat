@@ -10,8 +10,9 @@ export default function MessageBox({ message }) {
 
   const { timeStamp, content, userDisplayName, userId, userImageUri } =
     message?.data;
-  const date = timeStamp.toDate().toLocaleDateString();
-  const time = timeStamp.toDate().toLocaleTimeString();
+  const time = timeStamp
+    ?.toDate()
+    .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   const isMe = userId === currentUserId;
 
@@ -22,10 +23,13 @@ export default function MessageBox({ message }) {
         isMe ? styles.rightContainer : styles.leftContainer,
       ]}
     >
-      <Text style={{ color: "white", textAlign: "center" }}>{content}</Text>
-      <View style={{ flexDirection: "row" }}>
-        <Text style={styles.timestamp}>{date}</Text>
-        <Text style={styles.timestamp}>{time}</Text>
+      <Text style={{ color: "white" }}>{content}</Text>
+      <View>
+        <Text
+          style={[styles.timestamp, isMe ? styles.rightTime : styles.leftTime]}
+        >
+          {time}
+        </Text>
       </View>
     </View>
   );
@@ -48,5 +52,11 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: 8,
   },
-  timestamp: { color: "#f2f2f2", fontSize: 10, paddingHorizontal: 5 },
+  timestamp: { color: "#f2f2f2", fontSize: 10, paddingHorizontal: 2 },
+  rightTime: {
+    textAlign: "right",
+  },
+  leftTime: {
+    textAlign: "left",
+  },
 });
