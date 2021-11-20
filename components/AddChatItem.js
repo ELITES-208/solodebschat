@@ -3,6 +3,7 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { auth, db } from "../fb";
+import firebase from "firebase/compat/app";
 
 export default function AddChatItem({ user }) {
   const currentUser = auth.currentUser;
@@ -16,6 +17,22 @@ export default function AddChatItem({ user }) {
   const navigation = useNavigation();
 
   const createChatRoom = async () => {
+    await db
+      .collection("AddedTo")
+      .doc(currentUser.uid)
+      .update({
+        users: firebase.firestore.FieldValue.arrayUnion(id),
+      })
+      .catch((error) => alert(error));
+
+    await db
+      .collection("AddedTo")
+      .doc(id)
+      .update({
+        users: firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+      })
+      .catch((error) => alert(error));
+
     await db
       .collection("ChatRooms")
       .add({

@@ -77,7 +77,7 @@ export default function MainScreen({ navigation }) {
     return unsubscribe;
   }, []);
 
-  console.log(chatRoomsFetched);
+  // console.log(chatRoomsFetched);
 
   return (
     <SafeAreaView style={styles.container}>

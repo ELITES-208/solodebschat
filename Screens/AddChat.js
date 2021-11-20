@@ -7,21 +7,37 @@ import { auth, db } from "../fb";
 export default function AddChat({ navigation }) {
   const currentUserId = auth.currentUser.uid;
 
+  const [fetchedAddedTo, setFetchedAddedTo] = useState([]);
+
   const [usersFetched, setUsersFetched] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = db.collection("users").onSnapshot((snapshot) =>
-      setUsersFetched(
-        snapshot.docs
-          .map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-          .filter((obj) => obj.id != currentUserId)
-      )
-    );
+    const unsubscribe = db
+      .collection("AddedTo")
+      .doc(currentUserId)
+      .onSnapshot((doc) => {
+        setFetchedAddedTo(doc.data()?.users);
+      });
     return unsubscribe;
   }, []);
+  console.log(fetchedAddedTo);
+
+  useEffect(() => {
+    if (fetchedAddedTo.length != 0) {
+      const unsubscribe = db
+        .collection("users")
+        .where("userId", "not-in", fetchedAddedTo)
+        .onSnapshot((snapshot) =>
+          setUsersFetched(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        );
+      return unsubscribe;
+    } else null;
+  }, [fetchedAddedTo]);
 
   // console.log(usersFetched);
 

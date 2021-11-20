@@ -30,7 +30,13 @@ function RegisterScreen({ navigation }) {
           email,
           imageUri:
             "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg",
+          userId: auth.currentUser.uid,
         });
+        db.collection("AddedTo")
+          .doc(auth.currentUser.uid)
+          .set({
+            users: [auth.currentUser.uid],
+          });
         console.log(authUser);
       })
       .catch((error) => alert(error.message));
