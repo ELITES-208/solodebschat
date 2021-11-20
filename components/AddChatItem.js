@@ -19,6 +19,7 @@ export default function AddChatItem({ user }) {
     await db
       .collection("ChatRooms")
       .add({
+        members: [currentUser.uid, id],
         users: [
           {
             id: currentUser.uid,

@@ -63,18 +63,21 @@ export default function MainScreen({ navigation }) {
   }, [navigation]);
 
   useEffect(() => {
-    const unsubscribe = db.collection("ChatRooms").onSnapshot((snapshot) =>
-      setChatRoomsFetched(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      )
-    );
+    const unsubscribe = db
+      .collection("ChatRooms")
+      .where("members", "array-contains", `${auth.currentUser.uid}`)
+      .onSnapshot((snapshot) =>
+        setChatRoomsFetched(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
     return unsubscribe;
   }, []);
 
-  // console.log(chatRoomsFetched);
+  console.log(chatRoomsFetched);
 
   return (
     <SafeAreaView style={styles.container}>
