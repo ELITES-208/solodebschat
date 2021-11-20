@@ -15,7 +15,6 @@ function RegisterScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [imageURL, setImageURL] = useState("");
 
   const SignUp = () => {
     auth
@@ -23,12 +22,14 @@ function RegisterScreen({ navigation }) {
       .then((authUser) => {
         authUser.user.updateProfile({
           displayName: name,
-          photoURL: imageURL,
+          photoURL:
+            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg",
         });
         db.collection("users").doc(auth.currentUser.uid).set({
           name,
           email,
-          imageUri: imageURL,
+          imageUri:
+            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg",
         });
         console.log(authUser);
       })
@@ -73,13 +74,6 @@ function RegisterScreen({ navigation }) {
             placeholder="Enter Password"
             value={password}
             onChangeText={(text) => setPassword(text)}
-          />
-
-          <Input
-            type="text"
-            placeholder="Profile picture imageURL (optional)"
-            value={imageURL}
-            onChangeText={(text) => setImageURL(text)}
             onSubmitEditing={SignUp}
           />
         </View>
