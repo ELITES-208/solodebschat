@@ -5,6 +5,12 @@ import { useSelector } from "react-redux";
 import { db } from "../fb";
 
 export default function AddChatItem({ user }) {
+  const {
+    id,
+    data: { name },
+  } = user;
+  console.log(id);
+
   const navigation = useNavigation();
 
   const createChatRoom = async () => {
