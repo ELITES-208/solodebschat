@@ -41,7 +41,7 @@ export default function ChatScreen({ navigation, route }) {
       >
         <View style={{ flex: 1 }}></View>
       </TouchableWithoutFeedback>
-      <MessageInput />
+      <MessageInput route={route} />
     </SafeAreaView>
   );
 }

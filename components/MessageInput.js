@@ -10,12 +10,27 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { auth, db } from "../fb";
+import firebase from "firebase/compat/app";
 
-export default function MessageInput() {
-  const [message, setMessage] = useState();
+export default function MessageInput({ route }) {
+  const [input, setInput] = useState();
 
   const sendMessage = () => {
     Keyboard.dismiss();
+
+    db.collection("ChatRooms")
+      .doc(route?.params?.chatRoomId)
+      .collection("Chats")
+      .add({
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        content: input,
+        userDisplayName: auth.currentUser.displayName,
+        userId: auth.currentUser.uid,
+        userImageUri: auth.currentUser.photoURL,
+      });
+
+    setInput("");
   };
 
   return (
@@ -33,9 +48,10 @@ export default function MessageInput() {
         />
         <TextInput
           placeholder={"Type your message..."}
-          value={message}
-          onChangeText={(text) => setMessage(text)}
+          value={input}
+          onChangeText={(text) => setInput(text)}
           style={styles.textInput}
+          onSubmitEditing={sendMessage}
         />
       </View>
       <TouchableOpacity
