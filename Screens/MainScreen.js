@@ -17,6 +17,13 @@ export default function MainScreen({ navigation }) {
 
   const { fetchUser } = bindActionCreators(actionCreators, dispatch);
 
+  useEffect(() => {
+    const unsubscribe = fetchUser();
+    return unsubscribe;
+  }, []);
+
+  const { currentUser } = useSelector((state) => state.userState);
+
   const SignOut = () => {
     Alert.alert("Logout", "Are you sure you want to log out?", [
       {
@@ -68,8 +75,6 @@ export default function MainScreen({ navigation }) {
   }, []);
 
   // console.log(chatRoomsFetched);
-
-  const { currentUser } = useSelector((state) => state.userState);
 
   return (
     <SafeAreaView style={styles.container}>

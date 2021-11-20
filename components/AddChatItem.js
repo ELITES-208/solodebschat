@@ -7,9 +7,9 @@ import { db } from "../fb";
 export default function AddChatItem({ user }) {
   const {
     id,
-    data: { name },
+    data: { name, imageUri },
   } = user;
-  console.log(id);
+  // console.log(imageUri);
 
   const navigation = useNavigation();
 
@@ -17,7 +17,7 @@ export default function AddChatItem({ user }) {
     await db
       .collection("ChatRooms")
       .add({
-        users: [{ id: user?.id, name: user?.name, imageUri: user?.imageUri }],
+        users: [{ id: id, name: name, imageUri: imageUri }],
       })
       .then(() => navigation.goBack())
       .catch((error) => alert(error));
@@ -29,8 +29,8 @@ export default function AddChatItem({ user }) {
       style={styles.container}
       onPress={() => createChatRoom()}
     >
-      <Image source={{ uri: user?.imageUri }} style={styles.image} />
-      <Text style={styles.name}>{user?.name}</Text>
+      <Image source={{ uri: imageUri }} style={styles.image} />
+      <Text style={styles.name}>{name}</Text>
     </TouchableOpacity>
   );
 }
