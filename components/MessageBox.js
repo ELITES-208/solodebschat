@@ -37,7 +37,7 @@ export default function MessageBox({ message }) {
       ]}
     >
       {imageContent && (
-        <View style={{ marginBottom: 5 }}>
+        <View style={{ marginBottom: content ? 10 : 2 }}>
           <Image
             source={{ uri: imageContent }}
             style={{

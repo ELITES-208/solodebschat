@@ -51,6 +51,7 @@ export default function MessageInput({ route }) {
     setInput("");
     setIsEmojiPickerOpen(false);
     setImage(null);
+    setProgress(0);
   };
 
   const pickImage = async () => {
@@ -89,13 +90,14 @@ export default function MessageInput({ route }) {
     const task = storage.ref().child(childPath).put(blob);
 
     const taskProgress = (snapshot) => {
+      // console.log(`${snapshot.bytesTransferred}`);
       setProgress(snapshot.bytesTransferred / snapshot.totalBytes);
     };
 
     const taskCompleted = () => {
       task.snapshot.ref.getDownloadURL().then((snapshot) => {
         sendMessage(snapshot);
-        console.log(snapshot);
+        // console.log(snapshot);
       });
     };
 
@@ -127,8 +129,7 @@ export default function MessageInput({ route }) {
   const onSend = () => {
     if (image) {
       uploadImage();
-    }
-    if (input) {
+    } else if (input) {
       sendMessage();
     }
   };
@@ -139,20 +140,37 @@ export default function MessageInput({ route }) {
       keyboardVerticalOffset={100}
     >
       {image && (
-        <View style={styles.sendImageContainer}>
-          <Image
-            source={{ uri: image }}
-            style={{ aspectRatio: 4 / 3, height: 100, borderRadius: 5 }}
-            resizeMode="contain"
-          />
-          <Pressable onPress={() => setImage(null)}>
-            <AntDesign
-              name="close"
-              size={26}
-              color="grey"
-              style={[styles.icon, { margin: 2 }]}
+        <View>
+          <View style={styles.sendImageContainer}>
+            <Image
+              source={{ uri: image }}
+              style={{ aspectRatio: 4 / 3, height: 100, borderRadius: 5 }}
+              resizeMode="contain"
             />
-          </Pressable>
+            <Pressable onPress={() => setImage(null)}>
+              <AntDesign
+                name="close"
+                size={26}
+                color="grey"
+                style={[styles.icon, { margin: 2 }]}
+              />
+            </Pressable>
+          </View>
+          <View
+            style={{
+              marginHorizontal: 15,
+              justifyContent: "flex-start",
+            }}
+          >
+            <View
+              style={{
+                height: 3,
+                width: `${progress * 100}%`,
+                backgroundColor: "#d9a754",
+                borderRadius: 5,
+              }}
+            />
+          </View>
         </View>
       )}
       <View
