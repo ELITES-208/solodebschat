@@ -19,7 +19,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { auth, db } from "../fb";
+import { auth, db, storage } from "../fb";
 import firebase from "firebase/compat/app";
 import * as ImagePicker from "expo-image-picker";
 
@@ -68,10 +68,45 @@ export default function MessageInput({ route }) {
     }
   };
 
+  const uploadImage = async () => {
+    const uri = image;
+    const childPath = `ChatRooms/${
+      route?.params?.chatRoomId
+    }/${Math.random().toString(36)}`;
+
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const task = storage.ref().child(childPath).put(blob);
+
+    const taskProgress = (snapshot) => {
+      console.log(`transferred: ${snapshot.bytesTransferred}`);
+    };
+
+    const taskCompleted = () => {
+      task.snapshot.ref.getDownloadURL().then((snapshot) => {
+        sendMessage(snapshot);
+        console.log(snapshot);
+      });
+    };
+
+    const taskError = (err) => {
+      console.log(err);
+    };
+
+    task.on("state_changed", taskProgress, taskError, taskCompleted);
+  };
+
   const [input, setInput] = useState("");
   const [IsEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
-  const sendMessage = () => {
+  const resetFields = () => {
+    setInput("");
+    setIsEmojiPickerOpen(false);
+    setImage(null);
+  };
+
+  const sendMessage = (imageURL) => {
     Keyboard.dismiss();
 
     db.collection("ChatRooms")
@@ -79,14 +114,23 @@ export default function MessageInput({ route }) {
       .collection("Chats")
       .add({
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-        content: input,
+        content: input || null,
+        imageContent: imageURL || null,
         userDisplayName: auth.currentUser.displayName,
         userId: auth.currentUser.uid,
         userImageUri: auth.currentUser.photoURL,
       });
 
-    setInput("");
-    setIsEmojiPickerOpen(false);
+    resetFields();
+  };
+
+  const onSend = () => {
+    if (image) {
+      uploadImage();
+    }
+    if (input) {
+      sendMessage();
+    }
   };
 
   return (
@@ -139,7 +183,7 @@ export default function MessageInput({ route }) {
             value={input}
             onChangeText={(text) => setInput(text)}
             style={styles.textInput}
-            onSubmitEditing={sendMessage}
+            onSubmitEditing={onSend}
           />
           <Pressable onPress={takePhoto}>
             <Feather name="camera" size={24} color="grey" style={styles.icon} />
@@ -152,7 +196,7 @@ export default function MessageInput({ route }) {
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonContainer}
-          onPress={sendMessage}
+          onPress={onSend}
         >
           <Ionicons
             name="send-sharp"
