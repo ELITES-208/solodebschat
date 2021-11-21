@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { auth } from "../fb";
 
 const lightYellow = "#fdd969";
@@ -7,9 +13,16 @@ const darkYellow = "#d9a754";
 
 export default function MessageBox({ message }) {
   const currentUserId = auth.currentUser.uid;
+  const { width } = useWindowDimensions();
 
-  const { timeStamp, content, userDisplayName, userId, userImageUri } =
-    message?.data;
+  const {
+    timeStamp,
+    content,
+    userDisplayName,
+    userId,
+    userImageUri,
+    imageContent,
+  } = message?.data;
   const time = timeStamp
     ?.toDate()
     .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -23,7 +36,19 @@ export default function MessageBox({ message }) {
         isMe ? styles.rightContainer : styles.leftContainer,
       ]}
     >
-      <Text style={{ color: "white" }}>{content}</Text>
+      {imageContent && (
+        <View style={{ marginBottom: 5 }}>
+          <Image
+            source={{ uri: imageContent }}
+            style={{
+              width: width * 0.7,
+              aspectRatio: 4 / 3,
+            }}
+            resizeMode="contain"
+          />
+        </View>
+      )}
+      {content && <Text style={{ color: "white" }}>{content}</Text>}
       <View>
         <Text
           style={[styles.timestamp, isMe ? styles.rightTime : styles.leftTime]}

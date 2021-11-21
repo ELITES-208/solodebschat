@@ -43,6 +43,15 @@ export default function MessageInput({ route }) {
   }, []);
 
   const [image, setImage] = useState(null);
+  const [input, setInput] = useState("");
+  const [IsEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const resetFields = () => {
+    setInput("");
+    setIsEmojiPickerOpen(false);
+    setImage(null);
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -80,7 +89,7 @@ export default function MessageInput({ route }) {
     const task = storage.ref().child(childPath).put(blob);
 
     const taskProgress = (snapshot) => {
-      console.log(`transferred: ${snapshot.bytesTransferred}`);
+      setProgress(snapshot.bytesTransferred / snapshot.totalBytes);
     };
 
     const taskCompleted = () => {
@@ -95,15 +104,6 @@ export default function MessageInput({ route }) {
     };
 
     task.on("state_changed", taskProgress, taskError, taskCompleted);
-  };
-
-  const [input, setInput] = useState("");
-  const [IsEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-
-  const resetFields = () => {
-    setInput("");
-    setIsEmojiPickerOpen(false);
-    setImage(null);
   };
 
   const sendMessage = (imageURL) => {
@@ -142,7 +142,8 @@ export default function MessageInput({ route }) {
         <View style={styles.sendImageContainer}>
           <Image
             source={{ uri: image }}
-            style={{ width: 134, height: 100, borderRadius: 5 }}
+            style={{ aspectRatio: 4 / 3, height: 100, borderRadius: 5 }}
+            resizeMode="contain"
           />
           <Pressable onPress={() => setImage(null)}>
             <AntDesign
@@ -238,6 +239,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "lightgrey",
     borderRadius: 10,
+    // width: "100%",
   },
   inputContainer: {
     flexDirection: "row",
