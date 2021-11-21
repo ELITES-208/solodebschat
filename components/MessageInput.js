@@ -1,7 +1,8 @@
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-import EmojiSelector from "react-native-emoji-selector";
+import EmojiPicker from "rn-emoji-keyboard";
 import React, { useState } from "react";
 import {
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -41,57 +42,61 @@ export default function MessageInput({ route }) {
     <KeyboardAvoidingView
       style={[
         styles.container,
-        { height: IsEmojiPickerOpen || Platform.OS === "web" ? "50%" : "auto" },
+        {
+          marginBottom: IsEmojiPickerOpen
+            ? Dimensions.get("window").height * 0.4
+            : "auto",
+        },
       ]}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={100}
     >
-      <View style={styles.row}>
-        <View style={styles.inputContainer}>
-          <Pressable
-            onPress={() => {
-              setIsEmojiPickerOpen((currentValue) => !currentValue);
-              Keyboard.dismiss();
-            }}
-          >
-            <SimpleLineIcons
-              name="emotsmile"
-              size={24}
-              color="grey"
-              style={styles.icon}
-            />
-          </Pressable>
-          <TextInput
-            placeholder={"Type your message..."}
-            value={input}
-            onChangeText={(text) => setInput(text)}
-            style={styles.textInput}
-            onSubmitEditing={sendMessage}
-          />
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.buttonContainer}
-          onPress={sendMessage}
+      <View style={styles.inputContainer}>
+        <Pressable
+          onPress={() => {
+            setIsEmojiPickerOpen((currentValue) => !currentValue);
+            Keyboard.dismiss();
+          }}
         >
-          <Ionicons
-            name="send-sharp"
-            size={25}
-            color="white"
-            style={{ position: "relative", left: 3, padding: 10 }}
+          <SimpleLineIcons
+            name="emotsmile"
+            size={24}
+            color="grey"
+            style={styles.icon}
           />
-        </TouchableOpacity>
+        </Pressable>
+        <TextInput
+          placeholder={"Type your message..."}
+          value={input}
+          onChangeText={(text) => setInput(text)}
+          style={styles.textInput}
+          onSubmitEditing={sendMessage}
+        />
       </View>
-      {Platform.OS != "web"
-        ? IsEmojiPickerOpen && (
-            <EmojiSelector
-              onEmojiSelected={(emoji) =>
-                setInput((currentMessage) => currentMessage + emoji)
-              }
-              columns={8}
-            />
-          )
-        : null}
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.buttonContainer}
+        onPress={sendMessage}
+      >
+        <Ionicons
+          name="send-sharp"
+          size={25}
+          color="white"
+          style={{ position: "relative", left: 3, padding: 10 }}
+        />
+      </TouchableOpacity>
+
+      <View>
+        <EmojiPicker
+          onEmojiSelected={(emoji) =>
+            setInput((currentMessage) => currentMessage + emoji.emoji)
+          }
+          open={IsEmojiPickerOpen}
+          onClose={() => setIsEmojiPickerOpen(false)}
+          backdropColor=""
+          expandable={false}
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -99,8 +104,6 @@ export default function MessageInput({ route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-  },
-  row: {
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
