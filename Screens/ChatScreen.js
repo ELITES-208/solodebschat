@@ -40,6 +40,7 @@ export default function ChatScreen({ navigation, route }) {
       .onSnapshot((snapshot) =>
         setMessages(
           snapshot.docs.map((doc) => ({
+            isSent: !doc.metadata.hasPendingWrites,
             id: doc.id,
             data: doc.data(),
           }))
@@ -89,7 +90,9 @@ export default function ChatScreen({ navigation, route }) {
       <View style={{ flex: 1, paddingTop: 10 }}>
         <FlatList
           data={messages}
-          renderItem={({ item }) => <MessageBox message={item} />}
+          renderItem={({ item }) => (
+            <MessageBox message={item} chatRoomId={route?.params?.chatRoomId} />
+          )}
           showsVerticalScrollIndicator={false}
           inverted
           maxToRenderPerBatch={6}

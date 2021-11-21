@@ -1,4 +1,5 @@
-import React from "react";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -6,12 +7,13 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { auth } from "../fb";
+import { auth, db } from "../fb";
+import firebase from "firebase/compat/app";
 
 const lightYellow = "#fdd969";
 const darkYellow = "#d9a754";
 
-export default function MessageBox({ message }) {
+export default function MessageBox({ message, chatRoomId }) {
   const currentUserId = auth.currentUser.uid;
   const { width } = useWindowDimensions();
 
@@ -22,12 +24,29 @@ export default function MessageBox({ message }) {
     userId,
     userImageUri,
     imageContent,
+    seenBy,
   } = message?.data;
   const time = timeStamp
     ?.toDate()
     .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   const isMe = userId === currentUserId;
+
+  const markAsSeen = () => {
+    db.collection("ChatRooms")
+      .doc(chatRoomId)
+      .collection("Chats")
+      .doc(message?.id)
+      .update({
+        seenBy: firebase.firestore.FieldValue.arrayUnion(currentUserId),
+      });
+  };
+
+  useEffect(() => {
+    if (seenBy?.includes(currentUserId) || isMe) return;
+
+    markAsSeen(currentUserId);
+  }, [seenBy]);
 
   return (
     <View
@@ -49,12 +68,25 @@ export default function MessageBox({ message }) {
         </View>
       )}
       {content && <Text style={{ color: "white" }}>{content}</Text>}
-      <View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          alignSelf: isMe ? "flex-end" : "flex-start",
+        }}
+      >
         <Text
           style={[styles.timestamp, isMe ? styles.rightTime : styles.leftTime]}
         >
           {time}
         </Text>
+        {isMe && message?.isSent && (
+          <Ionicons
+            name={seenBy?.length ? "checkmark-done" : "checkmark"}
+            size={16}
+            color="#f2f2f2"
+          />
+        )}
       </View>
     </View>
   );

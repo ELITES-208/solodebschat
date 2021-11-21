@@ -121,6 +121,7 @@ export default function MessageInput({ route }) {
         userDisplayName: auth.currentUser.displayName,
         userId: auth.currentUser.uid,
         userImageUri: auth.currentUser.photoURL,
+        seenBy: [],
       });
 
     resetFields();
