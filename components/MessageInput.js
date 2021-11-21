@@ -1,9 +1,12 @@
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import EmojiPicker from "rn-emoji-keyboard";
 import React, { useState } from "react";
 import {
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -14,7 +17,8 @@ import { auth, db } from "../fb";
 import firebase from "firebase/compat/app";
 
 export default function MessageInput({ route }) {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState("");
+  const [IsEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
   const sendMessage = () => {
     Keyboard.dismiss();
@@ -31,21 +35,36 @@ export default function MessageInput({ route }) {
       });
 
     setInput("");
+    setIsEmojiPickerOpen(false);
   };
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[
+        styles.container,
+        {
+          marginBottom: IsEmojiPickerOpen
+            ? Dimensions.get("window").height * 0.4
+            : "auto",
+        },
+      ]}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={100}
     >
       <View style={styles.inputContainer}>
-        <SimpleLineIcons
-          name="emotsmile"
-          size={24}
-          color="grey"
-          style={styles.icon}
-        />
+        <Pressable
+          onPress={() => {
+            setIsEmojiPickerOpen((currentValue) => !currentValue);
+            Keyboard.dismiss();
+          }}
+        >
+          <SimpleLineIcons
+            name="emotsmile"
+            size={24}
+            color="grey"
+            style={styles.icon}
+          />
+        </Pressable>
         <TextInput
           placeholder={"Type your message..."}
           value={input}
@@ -66,16 +85,28 @@ export default function MessageInput({ route }) {
           style={{ position: "relative", left: 3, padding: 10 }}
         />
       </TouchableOpacity>
+
+      <View>
+        <EmojiPicker
+          onEmojiSelected={(emoji) =>
+            setInput((currentMessage) => currentMessage + emoji.emoji)
+          }
+          open={IsEmojiPickerOpen}
+          onClose={() => setIsEmojiPickerOpen(false)}
+          backdropColor=""
+          expandable={false}
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
     padding: 10,
-    alignItems: "center",
+    flexDirection: "row",
     width: "100%",
+    alignItems: "center",
   },
   inputContainer: {
     flexDirection: "row",
