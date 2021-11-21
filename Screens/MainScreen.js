@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
+import { View, Text, StyleSheet, Alert, FlatList, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -37,15 +37,21 @@ export default function MainScreen({ navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "SoloChat",
-      headerRight: () => (
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => SignOut()}
-            style={{ paddingHorizontal: 5 }}
-          >
-            <FontAwesome5 name="arrow-circle-left" size={24} color="white" />
+      headerTitleAlign: "center",
+      headerLeft: () => (
+        <View style={styles.headContainer}>
+          <TouchableOpacity activeOpacity={0.5} onPress={() => {}}>
+            <Image
+              source={{
+                uri: auth.currentUser.photoURL,
+              }}
+              style={styles.headImage}
+            />
           </TouchableOpacity>
+        </View>
+      ),
+      headerRight: () => (
+        <View style={{ flexDirection: "row", marginRight: 10 }}>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => navigation.navigate("AddChat")}
@@ -57,10 +63,17 @@ export default function MainScreen({ navigation }) {
               color="white"
             />
           </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => SignOut()}
+            style={{ paddingHorizontal: 5 }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="white" />
+          </TouchableOpacity>
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, auth.currentUser.photoURL]);
 
   useEffect(() => {
     const unsubscribe = db
@@ -96,5 +109,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  },
+  headContainer: {
+    padding: 10,
+  },
+  headImage: {
+    height: 40,
+    width: 40,
+    borderRadius: 30,
+    marginRight: 10,
   },
 });

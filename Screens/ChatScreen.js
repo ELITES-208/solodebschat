@@ -65,7 +65,7 @@ export default function ChatScreen({ navigation, route }) {
         </View>
       ),
       headerRight: () => (
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", marginRight: 10 }}>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => setChatOptionVisible(true)}
