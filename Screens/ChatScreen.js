@@ -1,21 +1,34 @@
+import { SimpleLineIcons } from "@expo/vector-icons";
 import React, { useLayoutEffect, useState } from "react";
 import {
+  Dimensions,
   FlatList,
   Image,
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
   Platform,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import ChatOptions from "../components/ChatOptions";
 import MessageBox from "../components/MessageBox";
 import MessageInput from "../components/MessageInput";
 import { db } from "../fb";
+import { actionCreators } from "../redux";
 
 export default function ChatScreen({ navigation, route }) {
+  const dispatch = useDispatch();
+
+  const { setChatOptionVisible } = bindActionCreators(actionCreators, dispatch);
+
   const [messages, setMessages] = useState([]);
 
   useLayoutEffect(() => {
@@ -48,7 +61,18 @@ export default function ChatScreen({ navigation, route }) {
             }}
             style={styles.headImage}
           />
-          <Text style={styles.headName}>{route.params?.name}</Text>
+          <Text style={styles.headName}>{route?.params?.name}</Text>
+        </View>
+      ),
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => setChatOptionVisible(true)}
+            style={{ paddingHorizontal: 5 }}
+          >
+            <SimpleLineIcons name="options-vertical" size={24} color="white" />
+          </TouchableOpacity>
         </View>
       ),
     });
@@ -56,6 +80,7 @@ export default function ChatScreen({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ChatOptions chatRoomData={route?.params} />
       <TouchableWithoutFeedback
         onPress={() => {
           Platform.OS != "web" ? Keyboard.dismiss() : null;

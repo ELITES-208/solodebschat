@@ -10,7 +10,7 @@ export default function ChatRoomItem({ chatRoom }) {
 
   const chatRoomId = chatRoom.id;
 
-  const { name, imageUri } = chatRoom?.data?.users.find(
+  const { id, name, imageUri } = chatRoom?.data?.users.find(
     (user) => user.id != currentUser.uid
   );
 
@@ -22,7 +22,7 @@ export default function ChatRoomItem({ chatRoom }) {
   const navigation = useNavigation();
 
   const enterChat = () => {
-    navigation.navigate("Chat", { chatRoomId, name, imageUri });
+    navigation.navigate("Chat", { chatRoomId, name, imageUri, id });
   };
 
   const [info, setInfo] = useState();
