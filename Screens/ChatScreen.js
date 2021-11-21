@@ -81,20 +81,21 @@ export default function ChatScreen({ navigation, route }) {
   return (
     <SafeAreaView style={styles.container}>
       <ChatOptions chatRoomData={route?.params} />
-      <TouchableWithoutFeedback
+      {/* <TouchableWithoutFeedback
         onPress={() => {
           Platform.OS != "web" ? Keyboard.dismiss() : null;
         }}
-      >
-        <View style={{ flex: 1, paddingTop: 10 }}>
-          <FlatList
-            data={messages}
-            renderItem={({ item }) => <MessageBox message={item} />}
-            showsVerticalScrollIndicator={false}
-            inverted
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      > */}
+      <View style={{ flex: 1, paddingTop: 10 }}>
+        <FlatList
+          data={messages}
+          renderItem={({ item }) => <MessageBox message={item} />}
+          showsVerticalScrollIndicator={false}
+          inverted
+          maxToRenderPerBatch={6}
+        />
+      </View>
+      {/* </TouchableWithoutFeedback> */}
       <MessageInput route={route} />
     </SafeAreaView>
   );
