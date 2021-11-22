@@ -62,7 +62,12 @@ export default function ChatScreen({ navigation, route }) {
             }}
             style={styles.headImage}
           />
-          <Text style={styles.headName}>{route?.params?.name}</Text>
+          <View>
+            <Text style={styles.headName}>{route?.params?.name}</Text>
+            <Text style={{ color: "white" }}>
+              {route?.params?.lastOnlineAt}
+            </Text>
+          </View>
         </View>
       ),
       headerRight: () => (
@@ -77,7 +82,7 @@ export default function ChatScreen({ navigation, route }) {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, route?.params?.lastOnlineAt]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -119,6 +124,7 @@ const styles = StyleSheet.create({
   headName: {
     fontSize: 18,
     color: "white",
+    fontWeight: "bold",
   },
   container: {
     flex: 1,

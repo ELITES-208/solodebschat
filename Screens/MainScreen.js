@@ -9,6 +9,7 @@ import ChatRoomsData from "../assets/dummy-data/ChatRooms";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth, db } from "../fb";
+import moment from "moment";
 
 export default function MainScreen({ navigation }) {
   const [chatRoomsFetched, setChatRoomsFetched] = useState([]);
@@ -16,13 +17,28 @@ export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const { fetchUser } = bindActionCreators(actionCreators, dispatch);
+  const { currentUser } = useSelector((state) => state.userState);
 
   useEffect(() => {
     const unsubscribe = fetchUser();
     return unsubscribe;
   }, []);
 
-  const { currentUser } = useSelector((state) => state.userState);
+  const updateLastOnline = () => {
+    if (!currentUser) {
+      return;
+    }
+    db.collection("users").doc(auth.currentUser.uid).update({
+      lastOnlineAt: moment().format(),
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateLastOnline();
+    }, 30 * 1000);
+    return () => clearInterval(interval);
+  }, [currentUser]);
 
   const SignOut = () => {
     Alert.alert("Logout", "Are you sure you want to log out?", [

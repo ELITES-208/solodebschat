@@ -23,7 +23,7 @@ export default function AddChat({ navigation }) {
   // console.log(fetchedAddedTo);
 
   useEffect(() => {
-    if (fetchedAddedTo.length != 0) {
+    if (fetchedAddedTo?.length != 0) {
       const unsubscribe = db
         .collection("users")
         .where("userId", "not-in", fetchedAddedTo)

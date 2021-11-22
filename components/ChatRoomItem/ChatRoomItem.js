@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth, db } from "../../fb";
+import moment from "moment";
 
 export default function ChatRoomItem({ chatRoom }) {
   const currentUser = auth.currentUser;
@@ -22,10 +23,17 @@ export default function ChatRoomItem({ chatRoom }) {
   const navigation = useNavigation();
 
   const enterChat = () => {
-    navigation.navigate("Chat", { chatRoomId, name, imageUri, id });
+    navigation.navigate("Chat", {
+      chatRoomId,
+      name,
+      imageUri,
+      id,
+      lastOnlineAt,
+    });
   };
 
   const [info, setInfo] = useState();
+  const [lastOnlineAt, setLastOnlineAt] = useState(null);
 
   useEffect(() => {
     const unsubscribe = db
@@ -45,6 +53,35 @@ export default function ChatRoomItem({ chatRoom }) {
     return unsubscribe;
   }, []);
   // console.log(info);
+
+  const updateOnlineStatus = () =>
+    db
+      .collection("users")
+      .doc(id)
+      .onSnapshot((doc) => {
+        const diffLastOnline = moment().diff(moment(doc?.data()?.lastOnlineAt));
+        if (diffLastOnline && diffLastOnline < 1 * 60 * 1000) {
+          setLastOnlineAt("online");
+        } else {
+          setLastOnlineAt(
+            `Last seen ${moment(doc?.data()?.lastOnlineAt).fromNow()}`
+          );
+        }
+        // setLastOnlineAt(diffLastOnline);
+        // setLastOnlineAt(moment(doc?.data()?.lastOnlineAt).fromNow());
+      });
+
+  useEffect(() => {
+    const unsubscribe = updateOnlineStatus();
+    return unsubscribe;
+  }, [lastOnlineAt]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateOnlineStatus();
+    }, 1 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [lastOnlineAt]);
 
   return (
     <TouchableOpacity
