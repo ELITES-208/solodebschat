@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Input, Button, Text } from "react-native-elements";
 import { auth, db } from "../fb";
+import moment from "moment";
 
 function RegisterScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -31,6 +32,7 @@ function RegisterScreen({ navigation }) {
           imageUri:
             "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg",
           userId: auth.currentUser.uid,
+          lastOnlineAt: moment().format(),
         });
         db.collection("AddedTo")
           .doc(auth.currentUser.uid)

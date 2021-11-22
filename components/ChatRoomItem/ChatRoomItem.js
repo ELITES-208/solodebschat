@@ -28,7 +28,6 @@ export default function ChatRoomItem({ chatRoom }) {
       name,
       imageUri,
       id,
-      lastOnlineAt,
     });
   };
 

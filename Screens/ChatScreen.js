@@ -1,5 +1,6 @@
 import { SimpleLineIcons } from "@expo/vector-icons";
-import React, { useLayoutEffect, useState } from "react";
+import moment from "moment";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -30,6 +31,7 @@ export default function ChatScreen({ navigation, route }) {
   const { setChatOptionVisible } = bindActionCreators(actionCreators, dispatch);
 
   const [messages, setMessages] = useState([]);
+  const [lastOnlineAt, setLastOnlineAt] = useState(null);
 
   useLayoutEffect(() => {
     const unsubscribe = db
@@ -49,6 +51,36 @@ export default function ChatScreen({ navigation, route }) {
     return unsubscribe;
   }, [route]);
 
+  const updateOnlineStatus = () =>
+    db
+      .collection("users")
+      .doc(route?.params?.id)
+      .onSnapshot((doc) => {
+        const diffLastOnline = moment().diff(moment(doc?.data()?.lastOnlineAt));
+        if (diffLastOnline && diffLastOnline < 1 * 60 * 1000) {
+          setLastOnlineAt("online");
+        } else {
+          setLastOnlineAt(
+            `Last seen ${moment(doc?.data()?.lastOnlineAt).fromNow()}`
+          );
+        }
+        // setLastOnlineAt(diffLastOnline);
+        // setLastOnlineAt(moment(doc?.data()?.lastOnlineAt).fromNow());
+      });
+
+  useEffect(() => {
+    const unsubscribe = updateOnlineStatus();
+    return unsubscribe;
+  }, [lastOnlineAt]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateOnlineStatus();
+    }, 40 * 1000);
+    return () => clearInterval(interval);
+  }, [lastOnlineAt]);
+  console.log(lastOnlineAt);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Chat",
@@ -64,9 +96,7 @@ export default function ChatScreen({ navigation, route }) {
           />
           <View>
             <Text style={styles.headName}>{route?.params?.name}</Text>
-            <Text style={{ color: "white" }}>
-              {route?.params?.lastOnlineAt}
-            </Text>
+            <Text style={{ color: "white" }}>{lastOnlineAt}</Text>
           </View>
         </View>
       ),
@@ -82,7 +112,7 @@ export default function ChatScreen({ navigation, route }) {
         </View>
       ),
     });
-  }, [navigation, route?.params?.lastOnlineAt]);
+  }, [navigation, lastOnlineAt]);
 
   return (
     <SafeAreaView style={styles.container}>
