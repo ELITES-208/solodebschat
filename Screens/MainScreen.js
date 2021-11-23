@@ -54,7 +54,12 @@ export default function MainScreen({ navigation }) {
       headerTitleAlign: "center",
       headerLeft: () => (
         <View style={styles.headContainer}>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => {}}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          >
             <Image
               source={{
                 uri: auth.currentUser.photoURL,
