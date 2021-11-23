@@ -67,6 +67,7 @@ export default function ChatRoomItem({ chatRoom }) {
           snapshot.docs.map((doc) => ({
             timestamp: doc.data().timeStamp,
             content: doc.data().content,
+            userId: doc.data().userId,
           }))
         )
       );
@@ -151,7 +152,9 @@ export default function ChatRoomItem({ chatRoom }) {
 
         {info?.length != 0 ? (
           <Text numberOfLines={1} style={styles.text}>
-            {info?.[0]?.content}
+            {info?.[0]?.userId === currentUser.uid
+              ? `Me: ${info?.[0]?.content}`
+              : info?.[0]?.content}
           </Text>
         ) : null}
       </View>
