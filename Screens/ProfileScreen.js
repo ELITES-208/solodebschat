@@ -16,12 +16,24 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function ProfileScreen({ navigation }) {
   //Deconstruct user data////////////////////////////
-  const { displayName } = auth?.currentUser;
+  const [displayName, setDisplayName] = useState(
+    auth?.currentUser?.displayName
+  );
   const [currentUserImage, setCurrentUserImage] = useState(
     auth?.currentUser?.photoURL
   );
   //   console.log(currentUserImage);
   //////////////////////////////////////////////////
+
+  //fetch username from firebase////////////////////////
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("users")
+      .doc(auth?.currentUser?.uid)
+      .onSnapshot((doc) => setDisplayName(doc?.data()?.name));
+    return unsubscribe;
+  }, []);
+  ///////////////////////////////////////////////////
 
   //Settings for header upon navigation/////////////////////////
   useLayoutEffect(() => {
@@ -170,7 +182,10 @@ export default function ProfileScreen({ navigation }) {
             <Text>Name</Text>
             <Text style={styles.name}>{displayName}</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("Edit Name")}
+          >
             <Feather name="edit-3" size={24} color="black" />
           </TouchableOpacity>
         </View>

@@ -11,9 +11,9 @@ import { auth } from "../fb";
 import firebase from "firebase/compat/app";
 
 export default function ResetPasswordScreen({ navigation }) {
-  const [currentPassword, setCurrentPassword] = useState(null);
-  const [newPassword, setNewPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   //function for re-authentication //////////////////////
   const reauthenticate = (currentPassword) => {

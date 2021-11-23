@@ -14,6 +14,7 @@ import AddChat from "./Screens/AddChat";
 import ChatScreen from "./Screens/ChatScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
 import ResetPasswordScreen from "./Screens/ResetPasswordScreen";
+import EditNameScreen from "./Screens/EditNameScreen";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -70,6 +71,7 @@ export default function App() {
           <Stack.Screen name="Chat" component={ChatScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Reset Password" component={ResetPasswordScreen} />
+          <Stack.Screen name="Edit Name" component={EditNameScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
