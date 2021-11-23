@@ -89,7 +89,7 @@ export default function ChatScreen({ navigation, route }) {
 
   //Header settings upon navigation and update of last online at////////////////////////////////////
   useLayoutEffect(() => {
-    navigation.setOptions({
+    const unsubscribe = navigation.setOptions({
       title: "Chat",
       headerBackTitle: null,
       headerTitleAlign: "left",
@@ -103,12 +103,14 @@ export default function ChatScreen({ navigation, route }) {
           />
           <View>
             <Text style={styles.headName}>{route?.params?.name}</Text>
-            <Text style={{ color: "white" }}>{lastOnlineAt}</Text>
+            <Text style={{ color: "white" }} numberOfLines={1}>
+              {lastOnlineAt}
+            </Text>
           </View>
         </View>
       ),
       headerRight: () => (
-        <View style={{ flexDirection: "row", marginRight: 10 }}>
+        <View style={{ flexDirection: "row", marginRight: 5 }}>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => setChatOptionVisible(true)}
@@ -119,6 +121,7 @@ export default function ChatScreen({ navigation, route }) {
         </View>
       ),
     });
+    return unsubscribe;
   }, [navigation, lastOnlineAt]);
   /////////////////////////////////////////////////////////
 

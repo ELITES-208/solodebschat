@@ -65,13 +65,14 @@ export default function ChatOptions({ chatRoomData }) {
 
   return (
     <Modal visible={isVisible} transparent={true}>
-      <View
+      <Pressable
         style={{
           flex: 1,
           backgroundColor: "#000000aa",
           alignItems: "center",
           justifyContent: "center",
         }}
+        onPress={() => setChatOptionVisible(false)}
       >
         <View
           style={{
@@ -86,13 +87,15 @@ export default function ChatOptions({ chatRoomData }) {
               Platform.OS != "web" ? confirmDelete(false) : deleteChatRoom();
             }}
           >
-            <Text style={styles.optionItem}>Delete Chat</Text>
+            <Text style={[styles.optionItem, { color: "red" }]}>
+              Delete Chat
+            </Text>
           </Pressable>
           <Pressable onPress={() => setChatOptionVisible(false)}>
             <Text style={styles.optionItem}>Cancel</Text>
           </Pressable>
         </View>
-      </View>
+      </Pressable>
     </Modal>
   );
 }
