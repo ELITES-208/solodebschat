@@ -23,14 +23,12 @@ function RegisterScreen({ navigation }) {
       .then((authUser) => {
         authUser.user.updateProfile({
           displayName: name,
-          photoURL:
-            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg",
+          photoURL: "https://cdn-icons-png.flaticon.com/512/456/456212.png",
         });
         db.collection("users").doc(auth.currentUser.uid).set({
           name,
           email,
-          imageUri:
-            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg",
+          imageUri: "https://cdn-icons-png.flaticon.com/512/456/456212.png",
           userId: auth.currentUser.uid,
           lastOnlineAt: moment().format(),
         });

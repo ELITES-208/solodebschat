@@ -119,7 +119,7 @@ export default function MainScreen({ navigation }) {
         text: "Cancel",
         style: "cancel",
       },
-      { text: "OK", onPress: () => auth.signOut() },
+      { text: "OK", style: "destructive", onPress: () => auth.signOut() },
     ]);
   };
   ////////////////////////////////////////////////////////////////////
