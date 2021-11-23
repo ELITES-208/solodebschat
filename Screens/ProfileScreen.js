@@ -20,7 +20,7 @@ export default function ProfileScreen({ navigation }) {
   const [currentUserImage, setCurrentUserImage] = useState(
     auth?.currentUser?.photoURL
   );
-  console.log(currentUserImage);
+  //   console.log(currentUserImage);
   //////////////////////////////////////////////////
 
   //Settings for header upon navigation/////////////////////////
@@ -82,7 +82,7 @@ export default function ProfileScreen({ navigation }) {
       setImage(result?.uri);
     }
   };
-  console.log(image);
+  //   console.log(image);
   /////////////////////////////////////////////////
 
   //Upload image function///////////////////////
@@ -124,7 +124,7 @@ export default function ProfileScreen({ navigation }) {
       .then(() => {
         db.collection("users")
           .doc(auth.currentUser.uid)
-          .set({
+          .update({
             imageUri: imageURL,
           })
           .catch((error) => alert(error));
@@ -218,7 +218,11 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.buttonText}>Upload Image</Text>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity activeOpacity={0.5} style={styles.Button}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.Button}
+          onPress={() => navigation.navigate("Reset Password")}
+        >
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
       )}
