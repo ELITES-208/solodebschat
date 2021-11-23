@@ -12,8 +12,7 @@ import { auth, db } from "../fb";
 import moment from "moment";
 
 export default function MainScreen({ navigation }) {
-  const [chatRoomsFetched, setChatRoomsFetched] = useState([]);
-
+  //Fetch current user data and save to state//////////////////////////
   const dispatch = useDispatch();
 
   const { fetchUser } = bindActionCreators(actionCreators, dispatch);
@@ -23,7 +22,9 @@ export default function MainScreen({ navigation }) {
     const unsubscribe = fetchUser();
     return unsubscribe;
   }, []);
+  ///////////////////////////////////////////////////////////////////
 
+  //Fetch and update last online////////////////////////////////////
   const updateLastOnline = () => {
     if (!currentUser) {
       return;
@@ -34,24 +35,21 @@ export default function MainScreen({ navigation }) {
   };
 
   useEffect(() => {
+    const unsubscribe = updateLastOnline();
+    return unsubscribe;
+  }, [currentUser]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       updateLastOnline();
     }, 30 * 1000);
     return () => clearInterval(interval);
   }, [currentUser]);
+  ////////////////////////////////////////////////////////////////
 
-  const SignOut = () => {
-    Alert.alert("Logout", "Are you sure you want to log out?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => auth.signOut() },
-    ]);
-  };
-
+  //Settings for header upon login and user image update/////////////////
   useLayoutEffect(() => {
-    navigation.setOptions({
+    const unsubscribe = navigation.setOptions({
       title: "SoloChat",
       headerTitleAlign: "center",
       headerLeft: () => (
@@ -89,7 +87,12 @@ export default function MainScreen({ navigation }) {
         </View>
       ),
     });
+    return unsubscribe;
   }, [navigation, auth.currentUser.photoURL]);
+  ///////////////////////////////////////////////////////////////
+
+  //Fetxh chat rooms of current user//////////////////////////////////
+  const [chatRoomsFetched, setChatRoomsFetched] = useState([]);
 
   useEffect(() => {
     const unsubscribe = db
@@ -107,6 +110,19 @@ export default function MainScreen({ navigation }) {
   }, []);
 
   // console.log(chatRoomsFetched);
+  /////////////////////////////////////////////////////////////////
+
+  //Sign out function////////////////////////////////////////////
+  const SignOut = () => {
+    Alert.alert("Logout", "Are you sure you want to log out?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => auth.signOut() },
+    ]);
+  };
+  ////////////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
