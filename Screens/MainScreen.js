@@ -15,7 +15,7 @@ export default function MainScreen({ navigation }) {
   //Fetch current user data and save to state//////////////////////////
   const dispatch = useDispatch();
 
-  const { fetchUser } = bindActionCreators(actionCreators, dispatch);
+  const { fetchUser, clearData } = bindActionCreators(actionCreators, dispatch);
   const { currentUser } = useSelector((state) => state.userState);
 
   useEffect(() => {
@@ -119,7 +119,13 @@ export default function MainScreen({ navigation }) {
         text: "Cancel",
         style: "cancel",
       },
-      { text: "OK", style: "destructive", onPress: () => auth.signOut() },
+      {
+        text: "OK",
+        style: "destructive",
+        onPress: () => {
+          auth.signOut(), clearData();
+        },
+      },
     ]);
   };
   ////////////////////////////////////////////////////////////////////
