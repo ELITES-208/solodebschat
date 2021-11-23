@@ -37,14 +37,6 @@ export default function AddChatItem({ user }) {
       .collection("ChatRooms")
       .add({
         members: [currentUser.uid, id],
-        users: [
-          {
-            id: currentUser.uid,
-            name: currentUser.displayName,
-            imageUri: currentUser.photoURL,
-          },
-          { id: id, name: name, imageUri: imageUri },
-        ],
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => navigation.goBack())

@@ -7,19 +7,39 @@ import { auth, db } from "../../fb";
 import moment from "moment";
 
 export default function ChatRoomItem({ chatRoom }) {
+  //Fetch current user//////////////////////////
   const currentUser = auth.currentUser;
+  /////////////////////////////////////////////
 
+  //Setup Date and time for chat room item
   const chatRoomId = chatRoom.id;
-
-  const { id, name, imageUri } = chatRoom?.data?.users.find(
-    (user) => user.id != currentUser.uid
-  );
 
   const date = chatRoom?.data?.createdAt?.toDate().toLocaleDateString();
   const time = chatRoom?.data?.createdAt
     ?.toDate()
     .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  ////////////////////////////////////////////////////
 
+  //Fetch other users data////////////////////
+  const [otherUser, setOtherUser] = useState(null);
+
+  const id = chatRoom?.data?.members.find(
+    (userId) => userId != currentUser.uid
+  );
+
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("users")
+      .doc(id)
+      .onSnapshot((doc) => setOtherUser(doc.data()));
+    return unsubscribe;
+  }, []);
+
+  const name = otherUser?.name;
+  const imageUri = otherUser?.imageUri;
+  /////////////////////////////////////////////
+
+  //Navigation for chat room////////////////////////
   const navigation = useNavigation();
 
   const enterChat = () => {
@@ -30,9 +50,10 @@ export default function ChatRoomItem({ chatRoom }) {
       id,
     });
   };
+  /////////////////////////////////////////////////
 
+  //Fetch timestamp for last message/////////////////////
   const [info, setInfo] = useState();
-  const [lastOnlineAt, setLastOnlineAt] = useState(null);
 
   useEffect(() => {
     const unsubscribe = db
@@ -52,6 +73,10 @@ export default function ChatRoomItem({ chatRoom }) {
     return unsubscribe;
   }, []);
   // console.log(info);
+  ////////////////////////////////////////////////////////////
+
+  //Fetch and update user online status/////////////////////////
+  const [lastOnlineAt, setLastOnlineAt] = useState(null);
 
   const updateOnlineStatus = () =>
     db
@@ -81,6 +106,7 @@ export default function ChatRoomItem({ chatRoom }) {
     }, 1 * 60 * 1000);
     return () => clearInterval(interval);
   }, [lastOnlineAt]);
+  ///////////////////////////////////////////////////////////////////////////////
 
   return (
     <TouchableOpacity
@@ -95,14 +121,16 @@ export default function ChatRoomItem({ chatRoom }) {
         }}
         style={styles.image}
       />
-
       {/* number badges/unread count */}
       {chatRoom.newMessages ? (
         <View style={styles.badgeContainer}>
           <Text style={styles.badgeText}>4</Text>
         </View>
       ) : null}
-
+      {/* Online status indicator */}
+      {lastOnlineAt === "online" ? (
+        <View style={styles.onlineStatusContainer}></View>
+      ) : null}
       {/* part containing name, time and last message */}
       <View style={styles.rightContainer}>
         <View style={styles.row}>

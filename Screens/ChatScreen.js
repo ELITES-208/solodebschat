@@ -26,12 +26,14 @@ import { db } from "../fb";
 import { actionCreators } from "../redux";
 
 export default function ChatScreen({ navigation, route }) {
+  //State for modal visibility//////////////////////////
   const dispatch = useDispatch();
 
   const { setChatOptionVisible } = bindActionCreators(actionCreators, dispatch);
+  ///////////////////////////////////////////////////////
 
+  //Fetch messages on navigation//////////////////////////////////////////
   const [messages, setMessages] = useState([]);
-  const [lastOnlineAt, setLastOnlineAt] = useState(null);
 
   useLayoutEffect(() => {
     const unsubscribe = db
@@ -50,7 +52,10 @@ export default function ChatScreen({ navigation, route }) {
       );
     return unsubscribe;
   }, [route]);
+  ///////////////////////////////////////////////
 
+  //fetch and update last online at///////////////////////////////////
+  const [lastOnlineAt, setLastOnlineAt] = useState(null);
   const updateOnlineStatus = () =>
     db
       .collection("users")
@@ -79,8 +84,10 @@ export default function ChatScreen({ navigation, route }) {
     }, 40 * 1000);
     return () => clearInterval(interval);
   }, [lastOnlineAt]);
-  console.log(lastOnlineAt);
+  // console.log(lastOnlineAt);
+  ////////////////////////////////////////////////////////////////////
 
+  //Header settings upon navigation and update of last online at////////////////////////////////////
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Chat",
@@ -113,6 +120,7 @@ export default function ChatScreen({ navigation, route }) {
       ),
     });
   }, [navigation, lastOnlineAt]);
+  /////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>

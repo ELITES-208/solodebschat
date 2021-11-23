@@ -21,11 +21,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    left: 45,
+    left: 50,
     top: 10,
   },
   badgeText: {
     color: "white",
+  },
+  onlineStatusContainer: {
+    backgroundColor: "green",
+    width: 15,
+    height: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "white",
+    position: "absolute",
+    left: 45,
+    top: 10,
   },
   rightContainer: {
     flex: 1,
