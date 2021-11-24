@@ -19,9 +19,13 @@ export default function MainScreen({ navigation }) {
   const { currentUser } = useSelector((state) => state.userState);
 
   useEffect(() => {
-    const unsubscribe = fetchUser();
-    return unsubscribe;
+    const unsubscribe = () => {
+      clearData();
+      fetchUser();
+    };
+    return unsubscribe();
   }, []);
+  // console.log(currentUser);
   ///////////////////////////////////////////////////////////////////
 
   //Fetch and update last online////////////////////////////////////
