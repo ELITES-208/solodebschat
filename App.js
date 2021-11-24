@@ -29,6 +29,7 @@ const globalScreenOption = {
   },
   headerTintColor: "#fff",
 };
+
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -49,7 +50,7 @@ export default function App() {
         <StatusBar style="light" />
         <Stack.Navigator
           initialRouteName={"Start"}
-          screenOptions={globalScreenOption}
+          screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Start" component={StartScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
