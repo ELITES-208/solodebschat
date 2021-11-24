@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 import AddChatItem from "../components/AddChatItem";
-import UsersData from "../assets/dummy-data/Users";
 import { auth, db } from "../fb";
 
 export default function AddChat({ navigation }) {

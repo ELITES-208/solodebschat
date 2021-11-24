@@ -64,7 +64,11 @@ export default function ChatOptions({ chatRoomData }) {
   };
 
   return (
-    <Modal visible={isVisible} transparent={true}>
+    <Modal
+      visible={isVisible}
+      transparent={true}
+      onRequestClose={() => setChatOptionVisible(false)}
+    >
       <Pressable
         style={{
           flex: 1,
@@ -87,9 +91,7 @@ export default function ChatOptions({ chatRoomData }) {
               Platform.OS != "web" ? confirmDelete(false) : deleteChatRoom();
             }}
           >
-            <Text style={[styles.optionItem, { color: "red" }]}>
-              Delete Chat
-            </Text>
+            <Text style={styles.optionItem}>Delete Chat</Text>
           </Pressable>
           <Pressable onPress={() => setChatOptionVisible(false)}>
             <Text style={styles.optionItem}>Cancel</Text>

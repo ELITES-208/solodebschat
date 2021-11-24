@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import Color from "../../assets/Color";
 
 const styles = StyleSheet.create({
   container: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   onlineStatusContainer: {
-    backgroundColor: "green",
+    backgroundColor: Color.green,
     width: 15,
     height: 15,
     borderRadius: 10,

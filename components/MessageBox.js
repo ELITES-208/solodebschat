@@ -9,9 +9,7 @@ import {
 } from "react-native";
 import { auth, db } from "../fb";
 import firebase from "firebase/compat/app";
-
-const lightYellow = "#fdd969";
-const darkYellow = "#d9a754";
+import Color from "../assets/Color";
 
 export default function MessageBox({ message, chatRoomId }) {
   const currentUserId = auth.currentUser.uid;
@@ -100,12 +98,12 @@ const styles = StyleSheet.create({
     maxWidth: "75%",
   },
   leftContainer: {
-    backgroundColor: lightYellow,
+    backgroundColor: Color.lightYellow,
     marginLeft: 10,
     marginRight: "auto",
   },
   rightContainer: {
-    backgroundColor: darkYellow,
+    backgroundColor: Color.darkYellow,
     marginLeft: "auto",
     marginRight: 8,
   },
