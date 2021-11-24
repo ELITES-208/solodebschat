@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Color from "../assets/Color";
 import { auth, db, storage } from "../fb";
 import firebase from "firebase/compat/app";
 import * as ImagePicker from "expo-image-picker";
@@ -166,7 +167,7 @@ export default function MessageInput({ route }) {
               style={{
                 height: 3,
                 width: `${progress * 100}%`,
-                backgroundColor: "#d9a754",
+                backgroundColor: Color.darkYellow,
                 borderRadius: 5,
               }}
             />
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   },
   textInput: { flex: 1, padding: 5, marginHorizontal: 5 },
   buttonContainer: {
-    backgroundColor: "green",
+    backgroundColor: Color.green,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",

@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, Alert, FlatList, Image } from "react-native";
+import { View, StyleSheet, Alert, FlatList, Image, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -140,13 +140,19 @@ export default function MainScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <FlatList
-          data={chatRoomsFetched}
-          renderItem={({ item }) => <ChatRoomItem chatRoom={item} />}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      {chatRoomsFetched?.length ? (
+        <View>
+          <FlatList
+            data={chatRoomsFetched}
+            renderItem={({ item }) => <ChatRoomItem chatRoom={item} />}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      ) : (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Text style={{ textAlign: "center" }}>No Chats Available</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

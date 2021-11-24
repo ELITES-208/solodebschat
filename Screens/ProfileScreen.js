@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import Color from "../assets/Color";
 import { auth, db, storage } from "../fb";
 import * as ImagePicker from "expo-image-picker";
 
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   cameraButton: {
-    backgroundColor: "green",
+    backgroundColor: Color.green,
     borderRadius: 100,
     position: "absolute",
   },
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
   },
   Button: {
     backgroundColor: "#d9a754",
-    margin: 10,
+    margin: 20,
     borderRadius: 10,
     alignItems: "center",
   },
