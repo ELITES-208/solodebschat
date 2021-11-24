@@ -2,19 +2,12 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import moment from "moment";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-  Dimensions,
   FlatList,
   Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { useDispatch } from "react-redux";

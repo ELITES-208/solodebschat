@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { auth, db } from "../fb";
 import firebase from "firebase/compat/app";
 

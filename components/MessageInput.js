@@ -14,7 +14,6 @@ import {
   Platform,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,

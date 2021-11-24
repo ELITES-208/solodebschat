@@ -1,12 +1,11 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert, FlatList, Image } from "react-native";
+import { View, StyleSheet, Alert, FlatList, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../redux";
 import ChatRoomItem from "../components/ChatRoomItem";
-import ChatRoomsData from "../assets/dummy-data/ChatRooms";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth, db } from "../fb";
 import moment from "moment";
