@@ -1,140 +1,246 @@
-import React, { useLayoutEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   View,
   TouchableWithoutFeedback,
   StyleSheet,
   Keyboard,
+  TouchableOpacity,
+  Platform,
+  SafeAreaView,
+  ImageBackground,
+  Image,
+  Text,
+  TextInput,
+  ScrollView,
 } from "react-native";
-import { Input, Button, Text } from "react-native-elements";
-// import firebase from "../Firebase";
+import { auth, db } from "../fb";
+import moment from "moment";
+import Color from "../assets/Color";
 
-function RegistrationScreen({ navigation }) {
+function RegisterScreen({ navigation }) {
+  //States for textboxes//////////////////////////////
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [imageURL, setImageURL] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  /////////////////////////////////////////////////////
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerBackTitle: "Back To Login",
-    });
-  }, [navigation]);
-
-  //   const register = () => {
-  //     auth
-  //       .createUserWithEmailAndPassword(email, password)
-  //       .then((authUser) => {
-  //         authUser.user.updateProfile({
-  //           displayName: name,
-  //           photoUrl: imageURL,
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         alert(err.message);
-  //       });
-  //   };
-
-  const SignUp = async () => {
-    // try {
-    //   await firebase.auth().createUserWithEmailAndPassword(email, password);
-    // } catch (err) {
-    //   alert(err.message);
-    // }
+  //Sign Up function///////////////////////////////////////
+  const SignUp = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        authUser.user.updateProfile({
+          displayName: name,
+          photoURL: "https://cdn-icons-png.flaticon.com/512/456/456212.png",
+        });
+        db.collection("users").doc(auth.currentUser.uid).set({
+          name,
+          email,
+          imageUri: "https://cdn-icons-png.flaticon.com/512/456/456212.png",
+          userId: auth.currentUser.uid,
+          lastOnlineAt: moment().format(),
+        });
+        db.collection("AddedTo")
+          .doc(auth.currentUser.uid)
+          .set({
+            users: [auth.currentUser.uid],
+          });
+        console.log(authUser?.user?.email);
+      })
+      .catch((error) => alert(error.message));
   };
+  /////////////////////////////////////////////////////////////
+
+  //Function to validate text boxes/////////////////////////
+  const onRegisterPress = () => {
+    if (!name) {
+      alert("Please enter your name");
+    }
+    if (name && !email) {
+      alert("Please enter your e-mail");
+    }
+    if (name && email && !password) {
+      alert("Please enter your password");
+    }
+    if (name && email && password && !confirmPassword) {
+      alert("Please confirm your password");
+    }
+    if (
+      name &&
+      email &&
+      password &&
+      confirmPassword &&
+      password != confirmPassword
+    ) {
+      alert("The passwords do not match");
+    }
+    if (
+      name &&
+      email &&
+      password &&
+      confirmPassword &&
+      password === confirmPassword
+    ) {
+      SignUp();
+    }
+  };
+  ////////////////////////////////////////////////////////////////
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.Container}>
-        <StatusBar style="light" />
-        <View Style={{ textAlign: "center" }}>
-          <Text h2 style={{ paddingBottom: 50 }}>
-            Join your Colleagues
-          </Text>
-          <Text
-            style={{ textAlign: "center", paddingBottom: 20, fontSize: 17 }}
-          >
-            Communication made easy at your convenience
-          </Text>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Input
-            type="text"
-            placeholder="Enter Full Name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <Input
-            type="email"
-            placeholder="Enter Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <Input
-            type="Password"
-            secureTextEntry={true}
-            placeholder="Enter Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-
-          <Input
-            type="text"
-            placeholder="Profile picture imageURL (optional)"
-            value={imageURL}
-            onChangeText={(text) => setImageURL(text)}
-            onSubmitEditing={SignUp}
-          />
-        </View>
-
-        <Button
-          raised
-          title="register"
-          containerStyle={styles.button}
-          onPress={SignUp}
-        />
-        <View
-          style={{
-            justifyContent: "center",
-            flexDirection: "row",
-            marginTop: 20,
-          }}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Platform.OS != "web" ? Keyboard.dismiss() : null;
+      }}
+    >
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={require("../assets/start-bg.png")}
+          resizeMode="cover"
+          style={styles.background}
         >
-          <Text style={{ color: "#000", fontSize: 15 }}>
-            Already have an account?
-          </Text>
-          <Button
-            title="login"
-            containerStyle={styles.button2}
-            raised
-            type="outline"
-            onPress={() => navigation.navigate("Login")}
-          />
-        </View>
-      </View>
+          <View style={styles.box}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{ flex: 1 }}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  source={require("../assets/solodebs-logo.png")}
+                  style={styles.image}
+                />
+              </View>
+              <Text style={styles.textBig}>Join Your Colleagues</Text>
+              <Text style={styles.textSmall}>
+                Communication made easy at your convenience
+              </Text>
+
+              <View style={{ paddingTop: 30 }}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Full Name"
+                    onChangeText={(text) => setName(text)}
+                    value={name}
+                  />
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your E-mail"
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
+                  />
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Password"
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
+                    secureTextEntry
+                  />
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Your Password"
+                    onChangeText={(text) => setConfirmPassword(text)}
+                    value={confirmPassword}
+                    secureTextEntry
+                  />
+                </View>
+              </View>
+            </ScrollView>
+
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.Button}
+              onPress={() => onRegisterPress()}
+            >
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+            <View style={styles.option}>
+              <Text>Already have an account ? </Text>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <Text style={{ color: Color.darkYellow }}>Sign In</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 }
 
-export default RegistrationScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
-  Container: {
-    justifyContent: "center",
-    alignItems: "center",
+  container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#ffff",
+  },
+  background: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  box: {
+    flex: 1,
+    backgroundColor: Color.ash,
+    marginHorizontal: 10,
+    marginTop: 50,
+    marginBottom: 20,
+    borderRadius: 10,
+  },
+  imageContainer: {
+    marginVertical: 20,
+    alignItems: "center",
+  },
+  image: {
+    backgroundColor: "white",
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+  },
+  textBig: {
+    color: Color.green,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 30,
+  },
+  textSmall: {
+    textAlign: "center",
+    fontSize: 16,
   },
   inputContainer: {
-    width: 310,
+    margin: 10,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: Color.lightYellow,
   },
-  button: {
-    width: 200,
-    marginTop: 10,
+  input: {
+    fontSize: 16,
+    paddingHorizontal: 10,
   },
-  button2: {
-    marginLeft: 6,
+  Button: {
+    backgroundColor: Color.lightYellow,
+    margin: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+    paddingVertical: 10,
+  },
+  option: {
+    paddingBottom: 10,
+    justifyContent: "center",
+    flexDirection: "row",
   },
 });
