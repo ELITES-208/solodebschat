@@ -64,7 +64,11 @@ export default function ChatOptions({ chatRoomData }) {
   };
 
   return (
-    <Modal visible={isVisible} transparent={true}>
+    <Modal
+      visible={isVisible}
+      transparent={true}
+      onRequestClose={() => setChatOptionVisible(false)}
+    >
       <Pressable
         style={{
           flex: 1,
