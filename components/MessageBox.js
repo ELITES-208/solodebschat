@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import {
   Image,
+  Pressable,
   StyleSheet,
   Text,
   useWindowDimensions,
@@ -10,8 +11,11 @@ import {
 import { auth, db } from "../fb";
 import firebase from "firebase/compat/app";
 import Color from "../assets/Color";
+import { useNavigation } from "@react-navigation/native";
 
 export default function MessageBox({ message, chatRoomId }) {
+  const navigation = useNavigation();
+
   const currentUserId = auth.currentUser.uid;
   const { width } = useWindowDimensions();
 
@@ -54,7 +58,10 @@ export default function MessageBox({ message, chatRoomId }) {
       ]}
     >
       {imageContent && (
-        <View style={{ marginBottom: content ? 10 : 2 }}>
+        <Pressable
+          style={{ marginBottom: content ? 10 : 2 }}
+          onPress={() => navigation.navigate("Image View", { imageContent })}
+        >
           <Image
             source={{ uri: imageContent }}
             style={{
@@ -63,7 +70,7 @@ export default function MessageBox({ message, chatRoomId }) {
             }}
             resizeMode="contain"
           />
-        </View>
+        </Pressable>
       )}
       {content && <Text style={{ color: "white" }}>{content}</Text>}
       <View

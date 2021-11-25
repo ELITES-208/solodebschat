@@ -15,6 +15,7 @@ import ProfileScreen from "./Screens/ProfileScreen";
 import ResetPasswordScreen from "./Screens/ResetPasswordScreen";
 import EditNameScreen from "./Screens/EditNameScreen";
 import StartNavigator from "./navigators/StartNavigator";
+import ImageViewScreen from "./Screens/ImageViewScreen";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -94,6 +95,7 @@ export default function App() {
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Reset Password" component={ResetPasswordScreen} />
           <Stack.Screen name="Edit Name" component={EditNameScreen} />
+          <Stack.Screen name="Image View" component={ImageViewScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
