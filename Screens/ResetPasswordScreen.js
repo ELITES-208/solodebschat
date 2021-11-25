@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -65,7 +66,7 @@ export default function ResetPasswordScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 1 }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <View style={{ paddingTop: 10 }}>
           <Text style={styles.textbig}>Reset Your Password?</Text>
           <Text style={styles.textSmall}>
@@ -101,7 +102,7 @@ export default function ResetPasswordScreen({ navigation }) {
             />
           </View>
         </View>
-      </View>
+      </ScrollView>
       <TouchableOpacity
         activeOpacity={0.5}
         style={styles.Button}
