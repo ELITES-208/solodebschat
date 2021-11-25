@@ -139,7 +139,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
-    padding: 10,
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   imageContainer: {
     marginVertical: 20,
