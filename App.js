@@ -2,19 +2,19 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import StartScreen from "./Screens/StartScreen";
-import LoginScreen from "./Screens/LoginScreen";
-import RegisterScreen from "./Screens/RegisterScreen";
 import MainScreen from "./Screens/MainScreen";
 import { auth } from "./fb";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { LogBox } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppLoading from "expo-app-loading";
 import AddChat from "./Screens/AddChat";
 import ChatScreen from "./Screens/ChatScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
 import ResetPasswordScreen from "./Screens/ResetPasswordScreen";
 import EditNameScreen from "./Screens/EditNameScreen";
+import StartNavigator from "./navigators/StartNavigator";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -31,6 +31,23 @@ const globalScreenOption = {
 };
 
 export default function App() {
+  //Async storage to check app first start////////////////////
+  const [ready, setReady] = useState(false);
+  const [isAppFirstStart, setIsAppFirstStart] = useState(true);
+
+  const getIsAppFirstStart = () => {
+    AsyncStorage.getItem("storedAppFirstStart")
+      .then((data) => {
+        if (data) {
+          setIsAppFirstStart(JSON.parse(data));
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  ////////////////////////////////////////////////////////////
+
+  //Authentication Listener///////////////////////////////////
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -43,19 +60,23 @@ export default function App() {
     });
     return unsubscribe;
   }, []);
+  ///////////////////////////////////////////////////////////
 
-  if (!loggedIn) {
+  if (!ready) {
+    return (
+      <AppLoading
+        startAsync={getIsAppFirstStart}
+        onFinish={() => setReady(true)}
+        onError={console.warn}
+      />
+    );
+  }
+
+  if (!loggedIn && ready) {
     return (
       <NavigationContainer>
         <StatusBar style="light" />
-        <Stack.Navigator
-          initialRouteName={"Start"}
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Start" component={StartScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-        </Stack.Navigator>
+        <StartNavigator isAppFirstStart={isAppFirstStart} />
       </NavigationContainer>
     );
   }
