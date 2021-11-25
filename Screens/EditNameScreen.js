@@ -53,7 +53,7 @@ export default function EditNameScreen({ navigation }) {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Current Password"
+              placeholder="Enter New Name"
               onChangeText={(text) => setNewName(text)}
               value={newName}
             />
