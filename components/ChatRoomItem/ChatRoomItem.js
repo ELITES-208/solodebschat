@@ -135,9 +135,11 @@ export default function ChatRoomItem({ chatRoom }) {
       {/* part containing name, time and last message */}
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name} numberOfLines={1}>
+            {name}
+          </Text>
           {info?.length != 0 ? (
-            <Text style={styles.text}>
+            <Text style={styles.text} numberOfLines={1}>
               {info?.[0]?.timestamp?.toDate().toLocaleDateString()}{" "}
               {info?.[0]?.timestamp
                 ?.toDate()
