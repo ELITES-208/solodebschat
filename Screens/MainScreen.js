@@ -1,5 +1,13 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, Alert, FlatList, Image, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  FlatList,
+  Image,
+  Text,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -87,7 +95,7 @@ export default function MainScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={() => SignOut()}
+            onPress={() => onLogoutPressed()}
             style={{ paddingHorizontal: 5 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="white" />
@@ -131,12 +139,24 @@ export default function MainScreen({ navigation }) {
         text: "OK",
         style: "destructive",
         onPress: () => {
-          auth.signOut(), clearData();
+          auth.signOut();
+          clearData();
         },
       },
     ]);
   };
   ////////////////////////////////////////////////////////////////////
+
+  //Function for when logout button is pressed///////////////////////////
+  const onLogoutPressed = () => {
+    if (Platform.OS === "web") {
+      auth.signOut();
+      clearData();
+    } else {
+      SignOut();
+    }
+  };
+  ////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>

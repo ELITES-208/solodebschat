@@ -88,6 +88,7 @@ function LoginScreen({ navigation }) {
                     onChangeText={(text) => setPassword(text)}
                     value={password}
                     secureTextEntry
+                    onSubmitEditing={() => onLoginPress()}
                   />
                 </View>
               </View>

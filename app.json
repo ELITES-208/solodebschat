@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "solo-chat-app",
-    "slug": "solo-chat-app",
+    "name": "Solo Chat",
+    "slug": "solo-chat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon1.png",

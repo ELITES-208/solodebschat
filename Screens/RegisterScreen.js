@@ -148,6 +148,7 @@ function RegisterScreen({ navigation }) {
                     onChangeText={(text) => setConfirmPassword(text)}
                     value={confirmPassword}
                     secureTextEntry
+                    onSubmitEditing={() => onRegisterPress()}
                   />
                 </View>
               </View>
