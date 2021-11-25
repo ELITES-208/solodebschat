@@ -32,12 +32,14 @@ function RegisterScreen({ navigation }) {
       .then((authUser) => {
         authUser.user.updateProfile({
           displayName: name,
-          photoURL: "https://cdn-icons-png.flaticon.com/512/456/456212.png",
+          photoURL:
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         });
         db.collection("users").doc(auth.currentUser.uid).set({
           name,
           email,
-          imageUri: "https://cdn-icons-png.flaticon.com/512/456/456212.png",
+          imageUri:
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
           userId: auth.currentUser.uid,
           lastOnlineAt: moment().format(),
         });
